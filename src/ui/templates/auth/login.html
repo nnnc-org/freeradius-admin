@@ -1,0 +1,87 @@
+{% load static %}
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Login</title>
+
+    <!-- Disable tap highlight on IE -->
+    <meta name="msapplication-tap-highlight" content="no" />
+
+    <link
+      href="{% static 'styles/main.css' %}"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <div class="app-container app-theme-white body-tabs-shadow">
+      <div class="app-container">
+        <div class="h-100 bg-plum-plate bg-animation">
+          <div class="d-flex h-100 justify-content-center align-items-center">
+            <div class="mx-auto app-login-box col-md-8">
+              <div class="modal-dialog w-100 mx-auto">
+                <div class="modal-content">
+                  <form method="POST">
+                    <div class="modal-body">
+                      <div class="h5 modal-title text-center">
+                        <h4
+                          class="themeoptions-heading"
+                          style="margin-bottom: 15px;"
+                        >
+                          <span>{{ _('Please sign in to your account below.') }}</span>
+                        </h4>
+                      </div>
+                      {% csrf_token %}
+                      <div class="form-row">
+                        <div class="col-md-12">
+                          <div class="position-relative form-group">
+                            {{ form.username | as_crispy_field }}
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div class="position-relative form-group">
+                            {{ form.password | as_crispy_field }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modal-footer clearfix">
+                      <div class="float-left mr-auto">
+                        <a class="btn btn-outline-primary btn-lg" href="{% url 'djangosaml2:saml2_login' %}">
+                            Single Sign On Login
+                        </a>
+                      </div>
+                      <div class="float-right">
+                        <button class='btn btn-primary btn-lg' type='submit'>Login</button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    {% if messages %}
+    <div id="toast-container" class="toast-bottom-center">
+      {% for category, message in messages %}
+      <div class="toast toast-{{category}}">
+        <div class="toast-title">{{ category }}</div>
+        <div class="toast-message">{{ message }}</div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+    
+    <script
+      type="text/javascript"
+      src="{% static 'scripts/main.js' %}"
+    ></script>
+  </body>
+</html>

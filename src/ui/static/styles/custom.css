@@ -1,0 +1,25 @@
+.table-heading {
+  text-transform: uppercase;
+}
+
+.grey-color {
+  color: #495057;
+}
+
+.no-record-message {
+  text-align: center;
+  margin: 15px 0;
+}
+
+.table-actions a {
+  margin: 0 5px;
+}
+
+.error-image {
+  margin: 10px 0;
+  width: 100%;
+}
+
+.error-msg {
+  text-align: center;
+}
