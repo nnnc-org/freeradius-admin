@@ -43,7 +43,7 @@ class CsvImportCreateView(BSModalCreateView):
     template_name = 'radius/add_csvimport.html'
     form_class = CsvImportForm
     success_message = 'Success: Import was created.'
-    success_url = reverse_lazy('devices')
+    success_url = reverse_lazy('csvimports')
 
 @method_decorator(login_required, name='dispatch')
 class DeviceCreateView(BSModalCreateView):

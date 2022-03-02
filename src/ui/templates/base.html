@@ -161,9 +161,9 @@
     </div>
     {% if messages %}
     <div id="toast-container" class="toast-bottom-center">
-      {% for category, message in messages %}
+      {% for message in messages %}
       <div class="toast toast-{{category}}">
-        <div class="toast-title">{{ category }}</div>
+        <div class="toast-title">{% if message.tags %}{{ message.tags }}{% endif %}</div>
         <div class="toast-message">{{ message }}</div>
       </div>
       {% endfor %}

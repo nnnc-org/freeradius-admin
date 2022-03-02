@@ -79,7 +79,8 @@
 <script>
   $(document).ready(function() {
     $(".create-import").modalForm({
-        formURL: "{% url 'csvimport_add' %}"
+        formURL: "{% url 'csvimport_add' %}",
+        errorClass: '.is-invalid'
     });
 });
 
