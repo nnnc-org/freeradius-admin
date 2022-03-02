@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from django.forms.widgets import PasswordInput, TextInput
 from core.models import User
-from freeradius.models import Device
+from freeradius.models import Device, CsvImporter
 from bootstrap_modal_forms.forms import BSModalModelForm
 
 class AuthForm(AuthenticationForm):
@@ -35,4 +35,29 @@ class DeviceForm(BSModalModelForm):
 
         labels = {
             'mac': 'MAC Address',
+        }
+
+class CsvImportForm(BSModalModelForm):
+
+    class Meta:
+        model = CsvImporter
+        fields = (
+            'csvfile',
+            'mac_header',
+            'hostname_header',
+            'description_header',
+            'overwrite',
+        )
+
+        widgets = {
+            'mac_header': forms.TextInput(attrs={'class': 'form-control'}),
+            'hostname_header': forms.TextInput(attrs={'class': 'form-control'}),
+            'description_header': forms.TextInput(attrs={'class': 'form-control h-25'}),
+        }
+
+        labels = {
+            'csvfile': 'CSV File',
+            'mac_header': 'MAC Address Header',
+            'hostname_header': 'Hostname Header (Optional)',
+            'description_header': 'Description Header (Optional)',
         }

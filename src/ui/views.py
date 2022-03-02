@@ -6,8 +6,8 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView
 
-from .forms import DeviceForm
-from freeradius.models import Device
+from .forms import DeviceForm, CsvImportForm
+from freeradius.models import Device, CsvImporter
 
 
 @method_decorator(login_required, name='dispatch')
@@ -27,6 +27,23 @@ class DeviceView(ListView):
         ordering = self.request.GET.get('order_by', '-created_at')
         return ordering
 
+@method_decorator(login_required, name='dispatch')
+class CsvImportView(ListView):
+    template_name = "radius/csv_imports.html"
+    model = CsvImporter
+    context_object_name = "imports"
+    paginate_by = 50
+
+    def get_ordering(self):
+        ordering = self.request.GET.get('order_by', '-created_at')
+        return ordering
+
+@method_decorator(login_required, name='dispatch')
+class CsvImportCreateView(BSModalCreateView):
+    template_name = 'radius/add_csvimport.html'
+    form_class = CsvImportForm
+    success_message = 'Success: Import was created.'
+    success_url = reverse_lazy('devices')
 
 @method_decorator(login_required, name='dispatch')
 class DeviceCreateView(BSModalCreateView):

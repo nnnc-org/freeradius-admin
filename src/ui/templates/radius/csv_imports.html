@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load ui_tags %}
+{% load static %}
+{% block container %}
+
+<div class="col-lg-12">
+    <div class="main-card mb-3 card">
+      <div class="card-body">
+        <div class="card-title">
+        <div class="float-right"><button class="btn create-import" style="background-color:transparent;"><i class="fas fa-plus-circle"></i></button></div>
+        <h5 class="card-title">{{ _('Previous Imports') }}</h5>
+        </div>
+
+        <table class="mb-0 table table-bordered table-hover table-striped">
+          <thead>
+            <tr>
+              <th class="table-heading"><a class="grey-color" href="?{% url_replace request 'order_by' 'created_at' '-' %}">{{ _('Created At') }}</a></th>
+              <th class="table-heading"><a class="grey-color" href="">{{ _('Device Count') }}</a></th>
+              <th class="table-heading"><a class="grey-color" href="">{{ _('Error Count') }}</a></th>
+              <th class="table-heading"><a class="grey-color" href="">{{ _('') }}</a></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for import in imports %}
+            <tr id="import-{{ import.id }}">
+              <td>{{ import.created_at }}</td>
+              <td>{{ import.devices.count }}</td>
+              <td>{{ import.error_messages.count }}</td>
+              <td></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% if not imports %}
+        <div class="no-record-message">{{ _('No record found') }}</div>
+        {% endif %}
+        <nav class="d-flex justify-content-center mt-3" aria-label="Page navigation example">
+          {% if is_paginated %}
+          <ul class="pagination">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{page_obj.previous_page_number}}"><i class="metismenu-icon fa fa-arrow-left"></i></a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+              <a class="page-link" href="#"><i class="metismenu-icon fa fa-arrow-left"></i></a>
+            </li>
+            {% endif %} 
+            {% for i in paginator.page_range %} {% if page_obj.number == i %}
+            <li class="page-item"><a class="page-link active">{{ i }}</a></li>
+            {% else %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+            </li>
+            {% endif %} {% endfor %} {% if page_obj.has_next %}
+            <li class="page-item">
+              <a href="?page={{page_obj.next_page_number}}" class="page-link"><i class="metismenu-icon fa fa-arrow-right"></i></a>
+            </li>
+            {% else %}
+            <li class="page-item disabled">
+              <a class="page-link"><i class="metismenu-icon fa fa-arrow-right"></i></a>
+            </li>
+            {% endif %}
+          </ul>
+          {% endif %}
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
+<script>
+  $(document).ready(function() {
+    $(".create-import").modalForm({
+        formURL: "{% url 'csvimport_add' %}"
+    });
+});
+
+</script>
+{% endblock javascripts %}

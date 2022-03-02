@@ -14,6 +14,8 @@ urlpatterns = [
     path('devices/', views.DeviceView.as_view(), name='devices'),
     path('devices/add/', views.DeviceCreateView.as_view(), name='device_add'),
     path('devices/edit/<pk>', views.DeviceEditView.as_view(), name='device_edit'),
+    path('imports/csv/', views.CsvImportView.as_view(), name='csvimports'),
+    path('imports/csv/add/', views.CsvImportCreateView.as_view(), name='csvimport_add'),
 
     # settings
     #path('settings/', views.SettingsView.as_view(), name='settings'),

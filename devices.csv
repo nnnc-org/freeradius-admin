@@ -1,0 +1,13 @@
+mac,host,description
+AC:DE:48:00:00:00,test1,Test Machine
+AC:DE:48:00:00:01,test1,Test Machine
+AC:DE:48:00:00:02,test2,Test Machine
+AC:DE:48:00:00:03,test3,Test Machine
+AC:DE:48:00:00:04,test4,Test Machine
+AC:DE:48:00:00:05,test5,Test Machine
+AC:DE:48:00:00:06,test6,Test Machine
+AC:DE:48:00:00:07,test7,Test Machine
+AC:DE:48:00:00:08,test8,Test Machine
+AC:DE:48:00:00:09,test9,Test Machine
+AC:DE:48:00:00:05,test5-later,Test Machine
+AC:DE:48:00:00:0a,test10,Test Machine
