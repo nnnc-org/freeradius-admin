@@ -21,6 +21,6 @@ from django.conf.urls import url
 urlpatterns = [
     path('saml2/', include(('djangosaml2.urls','djangosaml2'), namespace='djangosaml2')),
     path('admin/', admin.site.urls),
-    #url(r'', include('api.urls')),
+    url(r'', include('api.urls')),
     url(r'', include('ui.urls')),
 ]

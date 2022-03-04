@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #'django_filters',
+    'django_filters',
     'rest_framework',
     'rest_framework.authtoken',
     'djangosaml2',
@@ -51,10 +51,10 @@ INSTALLED_APPS = [
     'core',
     'freeradius',
     'ui',
-    #'api',
+    'api',
     'drf_spectacular',
     'bootstrap_modal_forms',
-    #'huey.contrib.djhuey',
+    'huey.contrib.djhuey',
     #'dynamic_preferences',
     # comment the following line if you don't want to use user preferences
     #'dynamic_preferences.users.apps.UserPreferencesConfig',
@@ -292,7 +292,7 @@ REST_FRAMEWORK = {
 SPECTACULAR_SETTINGS = {
     'SERVE_PUBLIC': False,
     'SERVE_PERMISSIONS': ['rest_framework.permissions.IsAuthenticated'],
-    'TITLE': 'Threat Tracker API',
+    'TITLE': 'FreeRADIUS Admin API',
     'CONTACT': {
         'name': "ESU2 Technology",
         'url': "https://www.esu2.org/",

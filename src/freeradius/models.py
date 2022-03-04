@@ -1,7 +1,8 @@
 from django.db import models
 from datetime import datetime
 from django.contrib.postgres.fields import ArrayField
-from macaddress.fields import MACAddressField
+from netfields import MACAddressField
+#from macaddress.fields import MACAddressField
 import csv
 
 
