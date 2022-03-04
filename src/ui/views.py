@@ -42,14 +42,14 @@ class CsvImportView(ListView):
 class CsvImportCreateView(BSModalCreateView):
     template_name = 'radius/add_csvimport.html'
     form_class = CsvImportForm
-    success_message = 'Success: Import was created.'
+    success_message = 'Import was created.'
     success_url = reverse_lazy('csvimports')
 
 @method_decorator(login_required, name='dispatch')
 class DeviceCreateView(BSModalCreateView):
     template_name = 'radius/add_device.html'
     form_class = DeviceForm
-    success_message = 'Success: Device was created.'
+    success_message = 'Device was created.'
     success_url = reverse_lazy('devices')
 
 
@@ -58,6 +58,6 @@ class DeviceEditView(BSModalUpdateView):
     template_name = 'radius/add_device.html'
     form_class = DeviceForm
     model = Device
-    success_message = 'Success: Device was updated.'
+    success_message = 'Device was updated.'
     success_url = reverse_lazy('devices')
 
