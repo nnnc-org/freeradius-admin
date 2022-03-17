@@ -27,8 +27,8 @@
             {% for device in devices %}
             <tr id="mac-{{ device.mac }}">
               <td>{{ device.mac }}</td>
-              <td>{{ device.hostname }}</td>
-              <td>{{ device.description }}</td>
+              <td>{{ device.hostname|default_if_none:"" }}</td>
+              <td>{{ device.description|default_if_none:"" }}</td>
               <td>{{ device.created_at }}</td>
             </tr>
             {% endfor %}
@@ -85,7 +85,7 @@
         formURL: "{% url 'device_add' %}"
     });
     {% for device in devices %}
-    $("#mac-{{device.mac}}").modalForm({
+    $(document.getElementById('mac-{{device.mac}}')).modalForm({
         formURL: "{% url 'device_edit' pk=device.mac %}"
     });
     {% endfor %}
