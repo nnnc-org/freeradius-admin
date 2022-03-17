@@ -60,4 +60,5 @@ class CsvImportForm(BSModalModelForm):
             'mac_header': 'MAC Address Header',
             'hostname_header': 'Hostname Header (Optional)',
             'description_header': 'Description Header (Optional)',
+            'overwrite': "Overwrite existing hostname & description?",
         }
