@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import TemplateView, View, ListView, DetailView
 from django.views.generic.edit import UpdateView, FormView
 from django.urls import reverse_lazy
+from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView
@@ -26,6 +27,15 @@ class DeviceView(ListView):
     def get_ordering(self):
         ordering = self.request.GET.get('order_by', '-created_at')
         return ordering
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        object_list = Device.objects.all()
+        if query:
+            object_list = Device.objects.filter(
+                Q(mac__icontains=query) | Q(hostname__icontains=query) | Q(description__icontains=query)
+            )
+        return object_list
 
 @method_decorator(login_required, name='dispatch')
 class CsvImportView(ListView):

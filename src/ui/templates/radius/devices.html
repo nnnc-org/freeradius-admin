@@ -9,6 +9,9 @@
         <div class="card-title">
         <div class="float-right"><button class="btn create-device" style="background-color:transparent;"><i class="fas fa-plus-circle"></i></button></div>
         <h5 class="card-title">{{ _('Defined Devices') }}</h5>
+        <form action="{% url 'devices' %}" method="get">
+          <input class="form-control" name="q" type="search" placeholder="Search..." value="{{ request.GET.q }}">
+        </form>
         </div>
 
         <table class="mb-0 table table-bordered table-hover table-striped">
