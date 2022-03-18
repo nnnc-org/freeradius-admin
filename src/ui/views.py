@@ -23,16 +23,13 @@ class DeviceView(ListView):
     model = Device
     context_object_name = "devices"
     paginate_by = 50
-
-    def get_ordering(self):
-        ordering = self.request.GET.get('order_by', '-created_at')
-        return ordering
-
+    
     def get_queryset(self):
         query = self.request.GET.get('q')
-        object_list = Device.objects.all()
+        ordering = self.request.GET.get('order_by', '-created_at')
+        object_list = Device.objects.order_by(ordering).all()
         if query:
-            object_list = Device.objects.filter(
+            object_list = Device.objects.order_by(ordering).filter(
                 Q(mac__icontains=query) | Q(hostname__icontains=query) | Q(description__icontains=query)
             )
         return object_list
