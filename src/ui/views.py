@@ -26,7 +26,7 @@ class DashboardView(ListView):
         object_list = PostAuthLog.objects.order_by('-created_at').filter(created_at__gte=datetime.now()-timedelta(days=7))
         if query:
             object_list = PostAuthLog.objects.order_by('-created_at').filter(created_at__gte=datetime.now()-timedelta(days=7)).filter(
-                Q(calling_station_id__icontains=query) | Q(created_at__icontains=query) | Q(reply__icontains=query) | Q(username__icontains=query)
+                Q(calling_station_id__icontains=query) | Q(created_at__icontains=query) | Q(packet_type__icontains=query) | Q(username__icontains=query)
             )
         return object_list
 
