@@ -18,7 +18,7 @@ class DashboardView(ListView):
     template_name = "radius/dashboard.html"
     model = PostAuthLog
     context_object_name = "logs"
-    paginate_by = 15
+    paginate_by = 12
     ordering = ['-created_at']
 
     def get_queryset(self):
