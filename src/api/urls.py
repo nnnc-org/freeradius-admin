@@ -9,6 +9,7 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, Spec
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'devices', views.DeviceViewSet, basename='devices')
+router.register(r'imports/csv', views.CsvImporterViewSet)
 #router.register(r'vuln/details', views.VulnDetailsViewSet)
 #router.register(r'vuln', views.VulnViewSet, basename='Vulnerability')
 #router.register(r'imports', views.ImportViewSet)

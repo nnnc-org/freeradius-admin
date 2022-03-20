@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import viewsets, filters
+from rest_framework import viewsets, filters, status
 from rest_framework import permissions, renderers
 from rest_framework.generics import get_object_or_404
 from rest_framework.decorators import action
@@ -8,7 +8,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from netfields.rest_framework import MACAddressField
 import re
 
-from .serializers import UserSerializer, DeviceSerializer
+from .serializers import UserSerializer, DeviceSerializer, CsvImporterSerializer
 from .filters import DeviceFilter
 from core.models import User
 from freeradius.models import Device, CsvImporter
@@ -40,12 +40,6 @@ class DeviceViewSet(viewsets.ModelViewSet):
     ordering = ('created_at')
 
     def get_object(self):
-        """
-        Returns the object the view is displaying.
-        You may want to override this if you need to provide non-standard
-        queryset lookups.  Eg if objects are referenced using multiple
-        keyword arguments in the url conf.
-        """
         queryset = self.filter_queryset(self.get_queryset())
 
         # Perform the lookup filtering.
@@ -58,6 +52,8 @@ class DeviceViewSet(viewsets.ModelViewSet):
             (self.__class__.__name__, lookup_url_kwarg)
         )
 
+        # allow more dynamic lookups - replace any weird chars with :
+        # allows 00-00-00-00-00 or 00.00.00.00.00.00 as valid attempts
         filter_kwargs = {self.lookup_field: re.sub('\W+', ':', self.kwargs[lookup_url_kwarg])}
         obj = get_object_or_404(queryset, **filter_kwargs)
 
@@ -65,3 +61,29 @@ class DeviceViewSet(viewsets.ModelViewSet):
         self.check_object_permissions(self.request, obj)
 
         return obj
+
+    def perform_create(self, serializer):
+        serializer.save(import_source=Device.SOURCE_API)
+
+class CsvImporterViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows csv_imports to be viewed, created, destroyed, or modified.
+    """
+    queryset = CsvImporter.objects.all()
+    serializer_class = CsvImporterSerializer
+    permission_classes = [permissions.IsAdminUser]
+    filter_backends = (DjangoFilterBackend, filters.OrderingFilter)
+    ordering_fields = ('id', 'created_at', 'updated_at', 'device__count')
+    filterset_fields = ('id', 'created_at', 'updated_at')
+
+    ordering = ('-created_at')
+    
+    def get_serializer_context(self):
+        return {'request': self.request}
+
+    @action(detail=True)
+    def process(self, request, *args, **kwargs):
+        obj = self.get_object()
+        t = tasks.process_import(obj.id)
+        content = {'status': "accepted", 'task_id': t.id}
+        return Response(content, status=status.HTTP_202_ACCEPTED)

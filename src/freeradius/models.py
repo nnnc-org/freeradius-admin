@@ -2,7 +2,6 @@ from django.db import models
 from datetime import datetime
 from django.contrib.postgres.fields import ArrayField
 from netfields import MACAddressField
-#from macaddress.fields import MACAddressField
 import csv
 
 
@@ -34,7 +33,7 @@ class Device(TimeStampMixin):
 class CsvImporter(TimeStampMixin):
     id = models.AutoField(primary_key=True)
     csvfile = models.FileField(upload_to='uploads/%Y/%m/%d/')
-    overwrite = models.BooleanField(default=True, help_text="Overwrite existing hostname & description?")
+    overwrite = models.BooleanField(default=True)
 
     # Header Fields to map the CSV to device values. MAC required, not others
     mac_header = models.CharField(max_length=254, default="mac")
@@ -59,15 +58,15 @@ class CsvImporter(TimeStampMixin):
 
                 if not device:
                     device = Device(mac=mac, import_source=Device.SOURCE_CSV)
-                    if hostname_header:
+                    if self.hostname_header:
                         device.hostname = row[self.hostname_header]
-                    if description_header:
+                    if self.description_header:
                         device.description = row[self.description_header]
                     device.save()
-                elif overwrite:
-                    if hostname_header:
+                elif self.overwrite:
+                    if self.hostname_header:
                         device.hostname = row[self.hostname_header]
-                    if description_header:
+                    if self.description_header:
                         device.description = row[self.description_header]
                     device.save()
 
@@ -78,7 +77,7 @@ class CsvImporter(TimeStampMixin):
 """
 class PostAuthLog(TimeStampMixin):
     username = models.CharField(verbose_name=_('username'), max_length=64)
-    reply = models.CharField(verbose_name=_('reply'), max_length=32)
+    packet_type = models.CharField(verbose_name=_('reply'), max_length=32)
     called_station_id = models.CharField(
         verbose_name=_('called station ID'),
         max_length=50,
@@ -91,9 +90,10 @@ class PostAuthLog(TimeStampMixin):
         blank=True,
         null=True,
     )
-    date = models.DateTimeField(
-        verbose_name=_('date'), auto_now_add=True
-    )
+    datetime = models.DateTimeField()
+    
+    reject_cause = models.TextField(blank=True, null=True)
+    vlan_id = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
         return str(self.username)
