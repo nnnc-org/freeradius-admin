@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  freeradius:
+    image: freeradius/freeradius-server:3.0.25
+    command: freeradius -X
+    container_name: freeradius
+    volumes:
+      - ./freeradius/users:/etc/freeradius/users
+      - ./freeradius/rest:/etc/freeradius/mods-enabled/rest
+      - ./freeradius/date:/etc/freeradius/mods-enabled/date
+      - ./freeradius/default:/etc/freeradius/sites-enabled/default

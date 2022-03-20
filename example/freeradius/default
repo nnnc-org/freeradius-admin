@@ -1,0 +1,103 @@
+server default {
+listen {
+	type = auth
+	ipaddr = *
+	port = 0
+	limit {
+	      max_connections = 16
+	      lifetime = 0
+	      idle_timeout = 30
+	}
+}
+listen {
+	ipaddr = *
+	port = 0
+	type = acct
+	limit {
+	}
+}
+listen {
+	type = auth
+	ipv6addr = ::	# any.  ::1 == localhost
+	port = 0
+	limit {
+	      max_connections = 16
+	      lifetime = 0
+	      idle_timeout = 30
+	}
+}
+listen {
+	ipv6addr = ::
+	port = 0
+	type = acct
+	limit {
+	}
+}
+authorize {
+	filter_username
+	preprocess
+	files
+	expiration
+	logintime
+	pap
+	Autz-Type New-TLS-Connection {
+		  ok
+	}
+}
+authenticate {
+	Auth-Type PAP {
+		pap
+	}
+}
+preacct {
+}
+accounting {
+}
+session {
+}
+post-auth {
+	update reply {
+		Tunnel-Type := VLAN
+		Tunnel-Medium-Type := IEEE-802
+		Tunnel-Private-Group-ID = 4
+		Tmp-String-0 := "0"
+	}
+	update control {
+		&REST-HTTP-Header := "Authorization: Token 5fe85adaecc77b4a322935e5ee95c49ecbadd98c"
+	}
+	rest.authorize
+	if (ok) {
+		update reply {
+			Tunnel-Private-Group-ID := 5
+			Tmp-String-0 := "1"
+		}
+	}
+
+	# Log the result
+	update control {
+		&REST-HTTP-Header := "Authorization: Token 5fe85adaecc77b4a322935e5ee95c49ecbadd98c"
+	}
+	rest
+
+	if (session-state:User-Name && reply:User-Name && request:User-Name && (reply:User-Name == request:User-Name)) {
+		update reply {
+			&User-Name !* ANY
+		}
+	}
+	update {
+		&reply: += &session-state:
+	}
+
+	Post-Auth-Type Reject {
+		# Log the result
+		update control {
+			&REST-HTTP-Header := "Authorization: Token 5fe85adaecc77b4a322935e5ee95c49ecbadd98c"
+		}
+		rest
+	}
+}
+pre-proxy {
+}
+post-proxy {
+}
+}

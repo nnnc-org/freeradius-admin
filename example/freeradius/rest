@@ -1,0 +1,27 @@
+rest {
+	tls {
+	}
+	connect_uri = "http://192.168.1.1:8080/api/v1"
+	authorize {
+		uri = "${..connect_uri}/devices/%{Calling-Station-ID}/"
+		method = 'get'
+		tls = ${..tls}
+	}
+	post-auth {
+		uri = "${..connect_uri}/log/"
+		method = 'post'
+		tls = ${..tls}
+        body = json
+        data = '{"username": "%{User-Name}", "datetime": "%{date_iso:Event-Timestamp}", "packet_type": "%{reply:Packet-Type}", "calling_station_id": "%{Calling-Station-Id}", "called_station_id": "%{Called-Station-Id}", "vlan_id": %{%{reply:Tunnel-Private-Group-ID}:-0}, "operator_name": "%{reply:Operator-Name}", "reject_cause": "%{jsonquote:%{%{session-state:Module-Failure-Message}:-%{Module-Failure-Message}}}", "trusted_device": "%{reply:Tmp-String-0}"}'
+	}
+	pool {
+		start = ${thread[pool].start_servers}
+		min = ${thread[pool].min_spare_servers}
+		max = ${thread[pool].max_servers}
+		spare = ${thread[pool].max_spare_servers}
+		uses = 0
+		retry_delay = 30
+		lifetime = 0
+		idle_timeout = 60
+	}
+}

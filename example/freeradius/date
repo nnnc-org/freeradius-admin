@@ -1,0 +1,13 @@
+date {
+	format = "%b %e %Y %H:%M:%S %Z"
+    #format = "%Y-%d-%eT%H:%M:%S|%Z"
+
+	# Use UTC instead of local time.
+	#
+	#  default = no
+#	utc = yes
+}
+date date_iso {
+	format = "%Y-%m-%dT%H:%M:%SZ"
+	utc = yes
+}
