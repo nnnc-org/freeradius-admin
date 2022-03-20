@@ -8,10 +8,10 @@ from django_filters.rest_framework import DjangoFilterBackend
 from netfields.rest_framework import MACAddressField
 import re
 
-from .serializers import UserSerializer, DeviceSerializer, CsvImporterSerializer
+from .serializers import UserSerializer, DeviceSerializer, CsvImporterSerializer, PostAuthLogSerializer
 from .filters import DeviceFilter
 from core.models import User
-from freeradius.models import Device, CsvImporter
+from freeradius.models import Device, CsvImporter, PostAuthLog
 from freeradius import tasks
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -87,3 +87,26 @@ class CsvImporterViewSet(viewsets.ModelViewSet):
         t = tasks.process_import(obj.id)
         content = {'status': "accepted", 'task_id': t.id}
         return Response(content, status=status.HTTP_202_ACCEPTED)
+
+class PostAuthLogViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows PostAuthLog to be viewed, created, destroyed, or modified.
+    """
+    queryset = PostAuthLog.objects.all()
+    serializer_class = PostAuthLogSerializer
+    permission_classes = [permissions.IsAdminUser]
+    filter_backends = (DjangoFilterBackend, filters.OrderingFilter)
+
+    ordering = ('-created_at')
+
+    def update(self, request, pk=None):
+        response = {'message': 'Update function is not offered in this path.'}
+        return Response(response, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def partial_update(self, request, pk=None):
+        response = {'message': 'Update function is not offered in this path.'}
+        return Response(response, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+    def destroy(self, request, pk=None):
+        response = {'message': 'Delete function is not offered in this path.'}
+        return Response(response, status=status.HTTP_405_METHOD_NOT_ALLOWED)

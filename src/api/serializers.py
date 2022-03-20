@@ -3,7 +3,7 @@ from rest_flex_fields.serializers import FlexFieldsSerializerMixin
 from rest_flex_fields import FlexFieldsModelSerializer
 
 from core.models import User
-from freeradius.models import Device, CsvImporter
+from freeradius.models import Device, CsvImporter, PostAuthLog
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -58,3 +58,10 @@ class CsvImporterSerializer(FlexFieldsModelSerializer):
         expandable_fields = {
             'devices': (DeviceSerializer, {'many': True})
         }
+
+class PostAuthLogSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only=True)
+
+    class Meta:
+        model = PostAuthLog
+        fields = '__all__'

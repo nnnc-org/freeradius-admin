@@ -74,27 +74,26 @@ class CsvImporter(TimeStampMixin):
                 self.devices.add(device)
         return
 
-"""
 class PostAuthLog(TimeStampMixin):
-    username = models.CharField(verbose_name=_('username'), max_length=64)
-    packet_type = models.CharField(verbose_name=_('reply'), max_length=32)
+    id = models.AutoField(primary_key=True)
+    username = models.CharField(max_length=64)
+    packet_type = models.CharField(max_length=32)
     called_station_id = models.CharField(
-        verbose_name=_('called station ID'),
         max_length=50,
         blank=True,
         null=True,
     )
     calling_station_id = models.CharField(
-        verbose_name=_('calling station ID'),
         max_length=50,
         blank=True,
         null=True,
     )
+    operator_name = models.CharField(max_length=254, blank=True, null=True)
     datetime = models.DateTimeField()
     
     reject_cause = models.TextField(blank=True, null=True)
     vlan_id = models.IntegerField(blank=True, null=True)
+    trusted_device = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.username)
-"""

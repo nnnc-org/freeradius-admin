@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from django.forms.widgets import PasswordInput, TextInput
 from core.models import User
-from freeradius.models import Device, CsvImporter
+from freeradius.models import Device, CsvImporter, PostAuthLog
 from bootstrap_modal_forms.forms import BSModalModelForm
 
 class AuthForm(AuthenticationForm):
@@ -61,4 +61,44 @@ class CsvImportForm(BSModalModelForm):
             'hostname_header': 'Hostname Header (Optional)',
             'description_header': 'Description Header (Optional)',
             'overwrite': "Overwrite existing hostname & description?",
+        }
+
+class PostAuthLogROForm(BSModalModelForm):
+    
+    def __init__(self,disable_fields=False, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].disabled = True
+        self.fields['packet_type'].disabled = True
+        self.fields['called_station_id'].disabled = True
+        self.fields['calling_station_id'].disabled = True
+        self.fields['operator_name'].disabled = True
+        self.fields['datetime'].disabled = True
+        self.fields['reject_cause'].disabled = True
+        self.fields['vlan_id'].disabled = True
+        self.fields['trusted_device'].disabled = True
+
+    class Meta:
+        model = PostAuthLog
+        fields = {
+            'username',
+            'packet_type',
+            'called_station_id',
+            'calling_station_id',
+            'operator_name',
+            'datetime',
+            'reject_cause',
+            'vlan_id',
+            'trusted_device',
+        }
+
+        widgets = {
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
+            'packet_type': forms.TextInput(attrs={'class': 'form-control'}),
+            'called_station_id': forms.TextInput(attrs={'class': 'form-control'}),
+            'calling_station_id': forms.TextInput(attrs={'class': 'form-control'}),
+            'operator_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'datetime': forms.TextInput(attrs={'class': 'form-control'}),
+            'reject_cause': forms.TextInput(attrs={'class': 'form-control'}),
+            'vlan_id': forms.TextInput(attrs={'class': 'form-control'}),
+            #'trusted_device': forms.CheckboxInput(attrs={'class': 'form-control'}),
         }

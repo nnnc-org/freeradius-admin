@@ -26,7 +26,11 @@
               <td>{{ import.created_at }}</td>
               <td>{{ import.devices.count }}</td>
               <td>{{ import.error_messages.count }}</td>
-              <td></td>
+              <td>
+                <a href="#"><i class="fas fa-redo"></i></a>
+                <a href="#"><i class="fas fa-pen"></i></a>
+                <a href="#"><i class="fas fa-trash-alt"></i></a>
+              </td>
             </tr>
             {% endfor %}
           </tbody>
