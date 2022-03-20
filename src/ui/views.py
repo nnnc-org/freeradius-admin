@@ -34,8 +34,8 @@ class DashboardView(ListView):
         context = super(DashboardView,self).get_context_data(**kwargs)
         context['success_logins']=PostAuthLog.objects.order_by('-created_at').filter(created_at__gte=datetime.now()-timedelta(days=7), packet_type="Access-Accept").count()
         context['failed_logins']=PostAuthLog.objects.order_by('-created_at').filter(created_at__gte=datetime.now()-timedelta(days=7), packet_type="Access-Reject").count()
-        context['trusted_devices']=PostAuthLog.objects.order_by('-created_at').filter(created_at__gte=datetime.now()-timedelta(days=7), trusted_device=True).count()
-        context['personal_devices']=PostAuthLog.objects.order_by('-created_at').filter(created_at__gte=datetime.now()-timedelta(days=7), trusted_device=False).count()
+        context['trusted_devices']=PostAuthLog.objects.order_by('-created_at').filter(created_at__gte=datetime.now()-timedelta(days=7), packet_type="Access-Accept", trusted_device=True).count()
+        context['personal_devices']=PostAuthLog.objects.order_by('-created_at').filter(created_at__gte=datetime.now()-timedelta(days=7), packet_type="Access-Accept", trusted_device=False).count()
 
         return context
 
