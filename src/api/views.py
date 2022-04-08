@@ -65,6 +65,14 @@ class DeviceViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(import_source=Device.SOURCE_API)
 
+    @action(detail=True)
+    def check(self, request, *args, **kwargs):
+        try:
+            obj = self.get_object()
+        except:
+            return Response({'message': "Device does not exist"}, status=status.HTTP_404_NOT_FOUND)
+        return Response({'message': "Device exists"}, status=status.HTTP_200_OK)
+
 class CsvImporterViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows csv_imports to be viewed, created, destroyed, or modified.
@@ -110,3 +118,10 @@ class PostAuthLogViewSet(viewsets.ModelViewSet):
     def destroy(self, request, pk=None):
         response = {'message': 'Delete function is not offered in this path.'}
         return Response(response, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+    
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response({'message': 'Log created'}, status=status.HTTP_201_CREATED, headers=headers)

@@ -79,7 +79,7 @@ class PostAuthLogROForm(BSModalModelForm):
 
     class Meta:
         model = PostAuthLog
-        fields = {
+        fields = [
             'username',
             'packet_type',
             'called_station_id',
@@ -89,7 +89,7 @@ class PostAuthLogROForm(BSModalModelForm):
             'reject_cause',
             'vlan_id',
             'trusted_device',
-        }
+        ]
 
         widgets = {
             'username': forms.TextInput(attrs={'class': 'form-control'}),
@@ -98,7 +98,7 @@ class PostAuthLogROForm(BSModalModelForm):
             'calling_station_id': forms.TextInput(attrs={'class': 'form-control'}),
             'operator_name': forms.TextInput(attrs={'class': 'form-control'}),
             'datetime': forms.TextInput(attrs={'class': 'form-control'}),
-            'reject_cause': forms.TextInput(attrs={'class': 'form-control'}),
+            'reject_cause': forms.Textarea(attrs={'class': 'form-control h-25', 'rows': '4'}),
             'vlan_id': forms.TextInput(attrs={'class': 'form-control'}),
             #'trusted_device': forms.CheckboxInput(attrs={'class': 'form-control'}),
         }
