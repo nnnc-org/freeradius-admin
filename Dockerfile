@@ -32,7 +32,7 @@ ENV DB_PWD 'postgres'
 ENV PATH=/root/.local/bin:$PATH
 
 # Install Packages
-RUN mkdir /project && apk --no-cache add libpq xmlsec
+RUN mkdir /project && apk --no-cache add libpq
 WORKDIR /project
 
 # Install dependencies via pip
