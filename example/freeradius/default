@@ -89,6 +89,12 @@ post-auth {
 	}
 
 	Post-Auth-Type Reject {
+		# Delete VLAN
+		update reply {
+			Tunnel-Private-Group-ID !* ANY
+			Tmp-String-0 = "0"
+		}
+
 		# Log the result
 		update control {
 			&REST-HTTP-Header := "Authorization: Token 5fe85adaecc77b4a322935e5ee95c49ecbadd98c"
