@@ -3,36 +3,21 @@ FROM python:3.10-alpine as base
 # Build psycopg2 from source & install npm modules
 FROM base as builder
                                                                                                                               
-RUN mkdir /install
-RUN apk --update add \
+RUN mkdir /install && apk --update add \
         libffi-dev \
         postgresql-dev \
         gcc \
         python3-dev \
-        musl-dev \
-        yarn \
-        xmlsec \
-        make \
-        cmake \
-        build-base \
-        py3-lxml py3-pillow py3-pybind11-dev python3-dev py3-pybind11 py3-wheel qpdf-dev
-
+        musl-dev
 WORKDIR /install
-
-#ADD package.json ./
-#ADD yarn.lock ./
-RUN echo -e "psycopg2-binary==2.8.6\ndjangosaml2==1.3.5" > /requirements.txt && \
+RUN echo -e "psycopg2-binary==2.8.6\nmozilla-django-oidc==2.0.0" > /requirements.txt && \
     pip install --upgrade pip && \
-    pip install --user -r /requirements.txt 
-    # && yarn install
+    pip install --user -r /requirements.txt
 
 FROM base
 
 # Copy compiled python modules from other container
 COPY --from=builder /root/.local /root/.local
-
-# Copy NPM Modules
-#COPY --from=builder /install/node_modules /node_modules
 
 # Setup Environment
 ENV PYTHONUNBUFFERED 1
@@ -46,12 +31,9 @@ ENV DB_PWD 'postgres'
 # Make sure scripts in .local are usable:
 ENV PATH=/root/.local/bin:$PATH
 
-RUN mkdir /project
-WORKDIR /project
-
 # Install Packages
-#RUN apk --no-cache add libpq xmlsec qpdf-dev
-RUN apk --no-cache add libpq xmlsec
+RUN mkdir /project && apk --no-cache add libpq xmlsec
+WORKDIR /project
 
 # Install dependencies via pip
 ADD requirements.txt /project/

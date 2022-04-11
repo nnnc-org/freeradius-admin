@@ -5,6 +5,7 @@ djangorestframework==3.12.4
 requests==2.26.0
 django-filter==21.1
 django-crispy-forms==1.13.0
+mozilla-django-oidc==2.0.0
 drf-spectacular==0.21.0
 drf-flex-fields==0.9.6
 django-bootstrap-modal-forms==2.2.0
