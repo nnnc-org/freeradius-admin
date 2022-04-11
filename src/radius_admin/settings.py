@@ -11,8 +11,6 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-import saml2
-import saml2.saml
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -46,7 +44,6 @@ INSTALLED_APPS = [
     'django_filters',
     'rest_framework',
     'rest_framework.authtoken',
-    'djangosaml2',
     'crispy_forms',
     'core',
     'freeradius',
@@ -68,107 +65,12 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'djangosaml2.middleware.SamlSessionMiddleware',
 ]
-
-## SAML Config O.o
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
-    'djangosaml2.backends.Saml2Backend',
 )
 
-SAML_CONFIG = {
-  # full path to the xmlsec1 binary programm
-  'xmlsec_binary': '/usr/bin/xmlsec1',
-
-  # your entity id, usually your subdomain plus the url to the metadata view
-  'entityid': WEB_PROTOCOL + '://' + DOMAIN + '/saml2/metadata/',
-
-  # directory with attribute mapping
-  'attribute_map_dir': os.path.join(BASE_DIR, 'attributemaps'),
-
-  # this block states what services we provide
-  'service': {
-      # we are just a lonely SP
-      'sp' : {
-          'name': 'FreeRADIUS Admin',
-          'name_id_format': (os.environ.get('SAML_NAMEID_FORMAT', "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress")),
-
-          # For Okta add signed logout requets. Enable this:
-          # "logout_requests_signed": True,
-
-          'endpoints': {
-              # url and binding to the assetion consumer service view
-              # do not change the binding or service name
-              'assertion_consumer_service': [
-                  (WEB_PROTOCOL + '://' + DOMAIN + '/saml2/acs/',
-                   saml2.BINDING_HTTP_POST),
-                  ],
-              # url and binding to the single logout service view
-              # do not change the binding or service name
-              'single_logout_service': [
-                  # Disable next two lines for HTTP_REDIRECT for IDP's that only support HTTP_POST. Ex. Okta:
-                  (WEB_PROTOCOL + '://' + DOMAIN + '/saml2/ls/',
-                   saml2.BINDING_HTTP_REDIRECT),
-                  (WEB_PROTOCOL + '://' + DOMAIN + '/saml2/ls/post',
-                   saml2.BINDING_HTTP_POST),
-                  ],
-              },
-           # Mandates that the identity provider MUST authenticate the
-           # presenter directly rather than rely on a previous security context.
-          'force_authn': False,
-
-           # Enable AllowCreate in NameIDPolicy.
-          'name_id_format_allow_create': False,
-
-          # attributes that this project need to identify a user
-          #'required_attributes': ['uid'],
-
-          # attributes that may be useful to have but not required
-          #'optional_attributes': ['eduPersonAffiliation'],
-          },
-      },
-
-  # where the remote metadata is stored, local, remote or mdq server.
-  # One metadatastore or many ...
-  'metadata': {
-      'remote': [{"url": os.environ.get('SAML_IDP_METADATA_URL', ''),
-                  "disable_ssl_certificate_validation": True},]
-      },
-
-  # set to 1 to output debugging information
-  'debug': 1,
-
-  # Signing
-  #'key_file': os.path.join(BASE_DIR, 'private.key'),  # private part
-  #'cert_file': os.path.join(BASE_DIR, 'public.pem'),  # public part
-
-  # Encryption
-  #'encryption_keypairs': [{
-  #    'key_file': os.path.join(BASE_DIR, 'private.key'),  # private part
-  #    'cert_file': os.path.join(BASE_DIR, 'public.pem'),  # public part
-  #}],
-
-  # own metadata settings
-  'contact_person': [
-      {'given_name': os.environ.get('SAML_CONTACT_FIRST_NAME', ''),
-       'sur_name': os.environ.get('SAML_CONTACT_LAST_NAME', ''),
-       'company': os.environ.get('SAML_CONTACT_COMPANY', ''),
-       'email_address': os.environ.get('SAML_CONTACT_EMAIL', ''),
-       'contact_type': 'technical'},
-      ],
-  # you can set multilanguage information here
-  'organization': {
-      'name': [(os.environ.get('SAML_COMPANY_NAME', ''), 'en')],
-      'display_name': [(os.environ.get('SAML_COMPANY_DISPLAY_NAME', ''), 'en')],
-      'url': [(os.environ.get('SAML_COMPANY_URL', ''), 'en')],
-      },
-  }
-
-SAML_DJANGO_USER_MAIN_ATTRIBUTE = 'email'
-SAML_DJANGO_USER_MAIN_ATTRIBUTE_LOOKUP = '__iexact'
-SAML_USE_NAME_ID_AS_USERNAME = True
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
