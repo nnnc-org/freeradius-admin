@@ -31,13 +31,11 @@ ENV DB_PWD 'postgres'
 # Make sure scripts in .local are usable:
 ENV PATH=/root/.local/bin:$PATH
 
-# Install Packages
-RUN mkdir /project && apk --no-cache add libpq
-WORKDIR /project
-
 # Install dependencies via pip
+WORKDIR /project
 ADD requirements.txt /project/
-RUN pip install --upgrade pip && \
+RUN apk --no-cache add libpq && \
+    pip install --upgrade pip && \
     pip install -r requirements.txt
 
 # Add code
