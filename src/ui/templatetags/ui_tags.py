@@ -1,4 +1,5 @@
 from django import template
+import os
 
 register = template.Library()
 
@@ -23,3 +24,7 @@ def url_replace(request, field, value, direction=''):
       dict_[field] = direction + value
 
     return urlencode(OrderedDict(sorted(dict_.items())))
+
+@register.filter
+def env(key):
+    return os.environ.get(key, None)

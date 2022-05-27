@@ -13,8 +13,9 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+import os
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.conf.urls import url
 
 
@@ -23,3 +24,6 @@ urlpatterns = [
     url(r'', include('api.urls')),
     url(r'', include('ui.urls')),
 ]
+
+if "OIDC_RP_CLIENT_ID" in os.environ:
+    urlpatterns.append(re_path(r'^oidc/', include('mozilla_django_oidc.urls')))
