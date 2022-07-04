@@ -11,7 +11,7 @@ docker-deploy:
   stage: build
   script:
     - |
-      echo "Build Version: ${CI_COMMIT_TAG}
+      echo "Build Version: ${CI_COMMIT_TAG}"
     - >
       docker build
       --pull
