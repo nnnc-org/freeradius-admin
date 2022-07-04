@@ -121,7 +121,7 @@ WSGI_APPLICATION = 'radius_admin.wsgi.application'
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": os.environ.get('REDIS_URL', 'redis://redis:6379/0'),
+        "LOCATION": os.environ.get('REDIS_CACHE_URL', 'redis://redis:6379/0'),
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
@@ -225,7 +225,7 @@ HUEY = {
     'immediate': False,
     'blocking': True,  # Perform blocking pop rather than poll Redis.
     'connection': {
-        'url': os.environ.get('REDIS_URL', 'redis://redis:6379/1'),
+        'url': os.environ.get('REDIS_HUEY_URL', 'redis://redis:6379/1'),
     },
     'consumer': {
         'workers': 2,
