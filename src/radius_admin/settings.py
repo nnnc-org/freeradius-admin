@@ -225,7 +225,7 @@ HUEY = {
     'immediate': False,
     'blocking': True,  # Perform blocking pop rather than poll Redis.
     'connection': {
-        'url': os.environ.get('REDIS_HUEY_URL', 'redis://redis:6379/1'),
+        'url': os.environ.get('REDIS_URL', 'redis://redis:6379/1'),
     },
     'consumer': {
         'workers': 2,
