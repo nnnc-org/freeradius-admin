@@ -27,6 +27,7 @@ services:
       - ./src/:/project/
     environment:
       DEBUG: 'True'
+      DATABASE_URL: postgres://postgres:postgres@db:5432/postgres
 
   tasks:
     build: .
