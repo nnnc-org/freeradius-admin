@@ -12,3 +12,4 @@ django-bootstrap-modal-forms==2.2.0
 redis==4.1.0
 django-redis==5.2.0
 huey==2.4.3
+whitenoise==6.2.0
