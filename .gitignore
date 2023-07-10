@@ -92,7 +92,7 @@ db.sqlite3
 /src/static/*
 !/src/static/.gitkeep
 !/src/static/css
-!/src/static/js
+#!/src/static/js
 /src/sent_emails
 /postgres-data
 *.crt
