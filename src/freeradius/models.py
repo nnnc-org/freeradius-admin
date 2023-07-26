@@ -19,6 +19,7 @@ class Device(TimeStampMixin):
     description = models.TextField(blank=True, null=True)
 
     SOURCE_MANUAL = 'MN'
+    SOURCE_INTEGRATION = 'IN'
     SOURCE_API = 'AP'
     SOURCE_CSV = 'CV'
 
@@ -26,6 +27,7 @@ class Device(TimeStampMixin):
         (SOURCE_MANUAL, "Manual"),
         (SOURCE_API, "API"),
         (SOURCE_CSV, "CSV"),
+        (SOURCE_INTEGRATION, "Integration"),
     ]
 
     import_source = models.CharField(max_length=2, choices=SOURCE_CHOICES, default=SOURCE_MANUAL)
