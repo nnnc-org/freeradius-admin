@@ -6,7 +6,7 @@ from freeradius.models import Device
 class AbstractModelMeta(abc.ABCMeta, type(models.Model)):
     pass
 
-class BaseIntegrations(models.Model, metaclass=AbstractModelMeta):
+class BaseIntegration(models.Model, metaclass=AbstractModelMeta):
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField(blank=True, null=True)
     info_messages = ArrayField(models.TextField(), blank=True, null=True)
