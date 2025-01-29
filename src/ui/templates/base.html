@@ -34,7 +34,7 @@
     </div>
     {% endblock %}
 
-    
+
     <div class="app-container app-theme-white body-tabs-shadow fixed-sidebar fixed-header">
       <!-- BEGIN HEADER -->
       <div class="app-header header-shadow">
@@ -104,7 +104,7 @@
       </div>
       <!-- END HEADER -->
 
-      
+
       <div class="app-main">
         <!-- BEGIN SIDEBAR -->
         <div class="app-sidebar sidebar-shadow">
@@ -132,9 +132,9 @@
                   </a>
                 </li>
                 <li>
-                  <a href="#">
+                  <a href="{% url 'integrations' %}">
                     <i class="metismenu-icon fa fa-cloud"></i>
-                    <i>{{ _('Auto Import (Unavailable)') }}</i>
+                    {{ _('Integrations') }}
                   </a>
                 </li>
                 <li>
