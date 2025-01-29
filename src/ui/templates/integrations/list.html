@@ -7,7 +7,10 @@
     <div class="main-card mb-3 card">
       <div class="card-body">
         <div class="card-title">
-        <div class="float-right"><button class="btn create-device" style="background-color:transparent;"><i class="fas fa-plus-circle"></i></button></div>
+
+        <div class="float-right"><button class="btn create-google" style="background-color:transparent;">Google <i class="fas fa-plus-circle"></i></button></div>
+        <div class="float-right"><button class="btn create-mosyle" style="background-color:transparent;">Mosyle <i class="fas fa-plus-circle"></i></button></div>
+
         <h5 class="card-title">{{ _('Integrations') }}</h5>
         </div>
 
@@ -18,6 +21,7 @@
               <th class="table-heading"><a class="grey-color" href="#">{{ _('Description') }}</a></th>
               <th class="table-heading"><a class="grey-color" href="#">{{ _('Date Added') }}</a></th>
               <th class="table-heading"><a class="grey-color" href="#">{{ _('Date Updated') }}</a></th>
+              <th class="table-heading"><a class="grey-color" href="#">{{ _('Actions') }}</a></th>
             </tr>
           </thead>
           <tbody>
@@ -27,6 +31,9 @@
               <td>{{ int.description|default_if_none:"" }}</td>
               <td>{{ int.created_at }}</td>
               <td>{{ int.updated_at }}</td>
+              <td>
+                  <!-- Edit, run now, delete  -->
+              </td>
             </tr>
             {% endfor %}
           </tbody>
@@ -45,7 +52,7 @@
             <li class="page-item disabled">
               <a class="page-link" href="#"><i class="metismenu-icon fa fa-arrow-left"></i></a>
             </li>
-            {% endif %} 
+            {% endif %}
             {% for i in paginator.page_range %} {% if page_obj.number == i %}
             <li class="page-item"><a class="page-link active">{{ i }}</a></li>
             {% else %}
@@ -78,7 +85,7 @@
 <script src="{% static 'js/jquery.bootstrap.modal.forms.min.js' %}"></script>
 <script>
   $(document).ready(function() {
-    $(".create-device").modalForm({
+    $(".create-mosyle").modalForm({
         formURL: "{% url 'mosyle_add' %}"
     });
     {% for device in devices %}
