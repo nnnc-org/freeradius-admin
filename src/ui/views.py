@@ -9,8 +9,9 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView
 
-from .forms import DeviceForm, CsvImportForm, PostAuthLogROForm
+from .forms import DeviceForm, CsvImportForm, PostAuthLogROForm, MosyleForm
 from freeradius.models import Device, CsvImporter, PostAuthLog
+from integrations.models import MosyleIntegrationModel
 
 
 @method_decorator(login_required, name='dispatch')
@@ -96,3 +97,17 @@ class PostAuthLogReadOnlyEditView(BSModalUpdateView):
     form_class = PostAuthLogROForm
     model = PostAuthLog
     success_url = reverse_lazy('home')
+
+@method_decorator(login_required, name='dispatch')
+class IntegrationList(ListView):
+    template_name = "integrations/list.html"
+    model = MosyleIntegrationModel
+    context_object_name = "integrations"
+    paginate_by = 10
+
+@method_decorator(login_required, name='dispatch')
+class MosyleCreateView(BSModalCreateView):
+    template_name = 'integrations/add_mosyle.html'
+    form_class = MosyleForm
+    success_message = 'Integration was created.'
+    success_url = reverse_lazy('integrations')

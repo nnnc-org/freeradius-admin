@@ -42,18 +42,21 @@ class MosyleIntegrationModel(BaseIntegration):
         ipads = cyclePages(self, {'os': 'ios', 'page': 1})
         macs = cyclePages(self, {'os': 'mac', 'page': 1})
 
+        print("ipads: " + str(len(ipads)))
+        print("macs: " + str(len(macs)))
+
         # add devices to integration
         for ipad in ipads:
             if ipad['wifi_mac_address']:
-                self.add_device_raw(self, ipad['wifi_mac_address'], ipad['device_name'], "iPad WiFi")
+                self.add_device_raw(ipad['wifi_mac_address'], ipad['device_name'], "iPad WiFi")
             if ipad['ethernet_mac_address']:
-                self.add_device_raw(self, ipad['ethernet_mac_address'], ipad['device_name'], "iPad Ethernet")
+                self.add_device_raw(ipad['ethernet_mac_address'], ipad['device_name'], "iPad Ethernet")
         
         for mac in macs:
             if mac['wifi_mac_address']:
-                self.add_device_raw(self, mac['wifi_mac_address'], mac['device_name'], "Mac WiFi")
+                self.add_device_raw(mac['wifi_mac_address'], mac['device_name'], "Mac WiFi")
             if mac['ethernet_mac_address']:
-                self.add_device_raw(self, mac['ethernet_mac_address'], mac['device_name'], "Mac Ethernet")
+                self.add_device_raw(mac['ethernet_mac_address'], mac['device_name'], "Mac Ethernet")
         
         #remove devices from integration
         for d in self.devices.all():

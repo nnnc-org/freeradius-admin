@@ -3,6 +3,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.forms.widgets import PasswordInput, TextInput
 from core.models import User
 from freeradius.models import Device, CsvImporter, PostAuthLog
+from integrations.models import MosyleIntegrationModel
 from bootstrap_modal_forms.forms import BSModalModelForm
 
 class AuthForm(AuthenticationForm):
@@ -101,4 +102,28 @@ class PostAuthLogROForm(BSModalModelForm):
             'reject_cause': forms.Textarea(attrs={'class': 'form-control h-25', 'rows': '4'}),
             'vlan_id': forms.TextInput(attrs={'class': 'form-control'}),
             #'trusted_device': forms.CheckboxInput(attrs={'class': 'form-control'}),
+        }
+
+class MosyleForm(BSModalModelForm):
+
+    class Meta:
+        model = MosyleIntegrationModel
+        fields = (
+            'name',
+            'description',
+            'username',
+            'password',
+            'accessToken',
+        )
+
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control h-25', 'rows': '4', 'placeholder': 'District A Mosyle setup'}),
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
+            'password': forms.PasswordInput(attrs={'class': 'form-control'}),
+            'accessToken': forms.PasswordInput(attrs={'class': 'form-control'}),
+        }
+
+        labels = {
+            'mac': 'MAC Address',
         }

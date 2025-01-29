@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'bootstrap_modal_forms',
     'huey.contrib.djhuey',
+    'integrations',
     #'dynamic_preferences',
     # comment the following line if you don't want to use user preferences
     #'dynamic_preferences.users.apps.UserPreferencesConfig',

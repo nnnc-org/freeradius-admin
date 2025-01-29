@@ -22,6 +22,9 @@ urlpatterns = [
     #path('imports/csv/process/<pk>', views.CsvImportProcessView.as_view(), name='csvimport_process'),
     #path('imports/csv/delete/<pk>', views.CsvImportProcessView.as_view(), name='csvimport_process'),
 
+    path('integrations/', views.IntegrationList.as_view(), name='integrations'),
+    path('integrations/mosyle/add/', views.MosyleCreateView.as_view(), name='mosyle_add'),
+
     # settings
     #path('settings/', views.SettingsView.as_view(), name='settings'),
 ]

@@ -42,7 +42,7 @@ class BaseIntegration(models.Model, metaclass=AbstractModelMeta):
             return
 
         # add device to devices
-        self.info_messages.append("Added device '" + str(d.mac) + "' on " + str(datetime.datetime.now()))
+        #self.info_messages.append("Added device '" + str(d.mac) + "' on " + str(datetime.datetime.now()))
         self.devices.add(d)
         self.save()
         return
