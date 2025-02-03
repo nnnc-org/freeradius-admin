@@ -2,7 +2,7 @@ FROM python:3.10-alpine as base
 
 # Build psycopg2 from source & install npm modules
 FROM base as builder
-                                                                                                                              
+
 RUN mkdir /install && apk --update add \
         libffi-dev \
         postgresql-dev \
@@ -34,7 +34,7 @@ ENV PATH=/root/.local/bin:$PATH
 # Install dependencies via pip
 WORKDIR /project
 ADD requirements.txt /project/
-RUN apk --no-cache add libpq && \
+RUN apk --no-cache add supervisor libpq && \
     pip install --upgrade pip && \
     pip install -r requirements.txt
 
@@ -42,4 +42,5 @@ RUN apk --no-cache add libpq && \
 ADD ./src/ /project/
 
 ADD entrypoint.sh /
-CMD [ "/entrypoint.sh" ]
+ADD supervisor.conf /etc/supervisord.conf
+CMD [ "supervisord", "-c", "/etc/supervisord.conf" ]

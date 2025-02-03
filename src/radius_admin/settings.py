@@ -90,7 +90,6 @@ if "OIDC_RP_CLIENT_ID" in os.environ:
     OIDC_OP_AUTHORIZATION_ENDPOINT = os.environ.get('OIDC_OP_AUTHORIZATION_ENDPOINT')
     OIDC_OP_TOKEN_ENDPOINT = os.environ.get('OIDC_OP_TOKEN_ENDPOINT')
     OIDC_OP_USER_ENDPOINT = os.environ.get('OIDC_OP_USER_ENDPOINT')
-    
     OIDC_OP_JWKS_ENDPOINT = os.environ.get('OIDC_OP_JWKS_ENDPOINT')
 
 
@@ -121,11 +120,7 @@ WSGI_APPLICATION = 'radius_admin.wsgi.application'
 # Caches
 CACHES = {
     "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": os.environ.get('REDIS_CACHE_URL', 'redis://redis:6379/0'),
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
     }
 }
 
@@ -220,14 +215,11 @@ SPECTACULAR_SETTINGS = {
 
 # Huey Task Queue Settings
 HUEY = {
-    'huey_class': 'huey.RedisHuey',  # Huey implementation to use.
+    'huey_class': 'huey.SqliteHuey',  # Huey implementation to use.
     'results': True,  # Store return values of tasks.
     'store_none': False,  # If a task returns None, do not save to results.
     'immediate': False,
-    'blocking': True,  # Perform blocking pop rather than poll Redis.
-    'connection': {
-        'url': os.environ.get('REDIS_HUEY_URL', 'redis://redis:6379/1'),
-    },
+    'filename': os.environ.get('HUEY_PATH', '/tmp/huey.sqlite3'),
     'consumer': {
         'workers': 2,
         'worker_type': 'thread',
