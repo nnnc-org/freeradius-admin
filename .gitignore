@@ -99,7 +99,5 @@ db.sqlite3
 *.key
 docker-compose.override.yml
 dump*
-
-findings.csv
 .env
-*.pdf
+*.pid
