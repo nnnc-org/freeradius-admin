@@ -11,7 +11,7 @@ from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView
 
 from .forms import DeviceForm, CsvImportForm, PostAuthLogROForm, MosyleForm
 from freeradius.models import Device, CsvImporter, PostAuthLog
-from integrations.models import MosyleIntegrationModel
+from integrations.models import MosyleIntegration
 
 
 @method_decorator(login_required, name='dispatch')
@@ -46,7 +46,7 @@ class DeviceView(ListView):
     model = Device
     context_object_name = "devices"
     paginate_by = 50
-    
+
     def get_queryset(self):
         query = self.request.GET.get('q')
         ordering = self.request.GET.get('order_by', '-created_at')
@@ -101,7 +101,7 @@ class PostAuthLogReadOnlyEditView(BSModalUpdateView):
 @method_decorator(login_required, name='dispatch')
 class IntegrationList(ListView):
     template_name = "integrations/list.html"
-    model = MosyleIntegrationModel
+    model = MosyleIntegration
     context_object_name = "integrations"
     paginate_by = 10
 

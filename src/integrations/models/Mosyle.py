@@ -5,7 +5,7 @@ import requests
 from requests.auth import HTTPBasicAuth
 from operator import itemgetter
 
-class MosyleIntegrationModel(BaseIntegration):
+class MosyleIntegration(BaseIntegration):
     accessToken = EncryptedTextField()
     username = models.CharField(max_length=255)
     password = EncryptedTextField()

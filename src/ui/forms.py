@@ -3,7 +3,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.forms.widgets import PasswordInput, TextInput
 from core.models import User
 from freeradius.models import Device, CsvImporter, PostAuthLog
-from integrations.models import MosyleIntegrationModel
+from integrations.models import MosyleIntegration
 from bootstrap_modal_forms.forms import BSModalModelForm
 
 class AuthForm(AuthenticationForm):
@@ -14,7 +14,7 @@ class AuthForm(AuthenticationForm):
         super(AuthForm, self).__init__(*args, **kwargs)
         self.fields['username'].widget = forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'E-mail Address'})
         self.fields['username'].label = False
-        self.fields['password'].widget = forms.PasswordInput(attrs={'class': 'form-control', 'placeholder':'Password'}) 
+        self.fields['password'].widget = forms.PasswordInput(attrs={'class': 'form-control', 'placeholder':'Password'})
         self.fields['password'].label = False
 
 
@@ -65,7 +65,7 @@ class CsvImportForm(BSModalModelForm):
         }
 
 class PostAuthLogROForm(BSModalModelForm):
-    
+
     def __init__(self,disable_fields=False, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['username'].disabled = True
@@ -107,7 +107,7 @@ class PostAuthLogROForm(BSModalModelForm):
 class MosyleForm(BSModalModelForm):
 
     class Meta:
-        model = MosyleIntegrationModel
+        model = MosyleIntegration
         fields = (
             'name',
             'description',

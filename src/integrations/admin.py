@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import MosyleIntegrationModel
+from .models import MosyleIntegration
 
 def run_integration(modeladmin, request, queryset):
     for obj in queryset:
@@ -13,6 +13,4 @@ class MosyleAdmin(admin.ModelAdmin):
     def devices_count(self, obj):
         return obj.devices.count()
 
-
-
-admin.site.register(MosyleIntegrationModel, MosyleAdmin)
+admin.site.register(MosyleIntegration, MosyleAdmin)
