@@ -27,7 +27,7 @@
           </thead>
           <tbody>
             {% for int in integrations %}
-            <tr id="int-{{ int.pk }}">
+            <tr id="int-{{ int.model_name }}-{{ int.pk }}">
               <td>{{ int.model_name }}</td>
               <td>{{ int.name }}</td>
               <td>{{ int.description|default_if_none:"" }}</td>
@@ -93,10 +93,20 @@
     $(".create-google").modalForm({
         formURL: "{% url 'google_add' %}"
     });
-    {% for device in devices %}
-    $(document.getElementById('mac-{{device.mac}}')).modalForm({
-        formURL: "{% url 'device_edit' pk=device.mac %}"
+    {% for int in integrations %}
+    {% if int.model_name == 'MosyleIntegration' %}
+
+    $(document.getElementById('int-{{ int.model_name }}-{{ int.id }}')).modalForm({
+        formURL: "{% url 'mosyle_edit' pk=int.id %}"
     });
+
+    {% elif int.model_name == 'GoogleIntegration' %}
+
+    $(document.getElementById('int-{{ int.model_name }}-{{ int.id }}')).modalForm({
+      formURL: "{% url 'google_edit' pk=int.id %}"
+    });
+
+    {% endif %}
     {% endfor %}
 });
 

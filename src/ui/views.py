@@ -82,7 +82,6 @@ class DeviceCreateView(BSModalCreateView):
     success_message = 'Device was created.'
     success_url = reverse_lazy('devices')
 
-
 @method_decorator(login_required, name='dispatch')
 class DeviceEditView(BSModalUpdateView):
     template_name = 'radius/add_device.html'
@@ -111,12 +110,19 @@ class IntegrationList(ListView):
         combined_objects = list(goog) + list(mos)
         return combined_objects
 
-
+@method_decorator(login_required, name='dispatch')
+class MosyleEditView(BSModalUpdateView):
+    template_name = 'integrations/add_mosyle.html'
+    form_class = MosyleForm
+    model = MosyleIntegration
+    success_message = 'Integration was altered.'
+    success_url = reverse_lazy('integrations')
 
 @method_decorator(login_required, name='dispatch')
 class MosyleCreateView(BSModalCreateView):
     template_name = 'integrations/add_mosyle.html'
     form_class = MosyleForm
+    model = MosyleIntegration
     success_message = 'Integration was created.'
     success_url = reverse_lazy('integrations')
 
@@ -126,9 +132,34 @@ class GoogleCreateView(BSModalCreateView):
     form_class = GoogleForm
     success_message = 'Integration was created.'
     success_url = reverse_lazy('integrations')
+    model = GoogleIntegration
 
     def form_valid(self, form):
+        # check for 'service_account_field' in request.FILES
+        if 'service_account' not in self.request.FILES:
+            return super().form_invalid(form)
 
+        # Handle the uploaded file and convert it to text
+        service_account_file = self.request.FILES['service_account']
+
+        # Read the file content
+        file_content = service_account_file.read().decode('utf-8')
+        service_account_file.close()
+
+        # set form service_account field to the file content
+        form.instance.service_account = file_content
+
+        return super().form_valid(form)
+
+@method_decorator(login_required, name='dispatch')
+class GoogleEditView(BSModalUpdateView):
+    template_name = 'integrations/add_google.html'
+    form_class = GoogleForm
+    success_message = 'Integration was created.'
+    success_url = reverse_lazy('integrations')
+    model = GoogleIntegration
+
+    def form_valid(self, form):
         # check for 'service_account_field' in request.FILES
         if 'service_account' not in self.request.FILES:
             return super().form_invalid(form)
