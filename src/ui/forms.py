@@ -3,7 +3,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.forms.widgets import PasswordInput, TextInput
 from core.models import User
 from freeradius.models import Device, CsvImporter, PostAuthLog
-from integrations.models import MosyleIntegration
+from integrations.models import MosyleIntegration, GoogleIntegration
 from bootstrap_modal_forms.forms import BSModalModelForm
 
 class AuthForm(AuthenticationForm):
@@ -126,4 +126,24 @@ class MosyleForm(BSModalModelForm):
 
         labels = {
             'mac': 'MAC Address',
+        }
+
+
+class GoogleForm(BSModalModelForm):
+
+    class Meta:
+        model = GoogleIntegration
+        fields = (
+            'name',
+            'description',
+            'username',
+            'service_account',
+        )
+
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control h-25', 'rows': '4', 'placeholder': 'District A Google setup'}),
+            'username': forms.TextInput(attrs={'class': 'form-control'}),
+            #'service_account': forms.Textarea(attrs={'class': 'form-control h-25', 'rows': '4'}),
+            'service_account': forms.FileInput(attrs={'class': 'form-control'}),
         }

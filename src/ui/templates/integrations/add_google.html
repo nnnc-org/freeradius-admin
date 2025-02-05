@@ -1,12 +1,12 @@
 {% load crispy_forms_tags %}
 
-<form method="post" action="">
+<form method="post" enctype="multipart/form-data" action="">
   {% csrf_token %}
 
   <div class="modal-header">
     <h5 class="modal-title">
-      {% if form.instance.pk %}Edit Google Integration{% else %}
-      Create New Google Integration{% endif %}
+      {% if form.instance.pk %}Edit Mosyle Integration{% else %}
+      Create New Mosyle Integration{% endif %}
     </h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
       <span aria-hidden="true">&times;</span>

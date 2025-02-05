@@ -13,7 +13,7 @@ class BaseIntegration(models.Model, metaclass=AbstractModelMeta):
     enabled = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
+
     devices = models.ManyToManyField(Device, blank=True, null=True)
 
     class Meta:
@@ -23,7 +23,7 @@ class BaseIntegration(models.Model, metaclass=AbstractModelMeta):
         # if the device is not in this integration, do nothing
         if not self.devices.filter(pk=mac).exists():
             return
-        
+
         # get device
         d = self.devices.get(pk=mac)
 
@@ -35,7 +35,7 @@ class BaseIntegration(models.Model, metaclass=AbstractModelMeta):
         if d.import_source == Device.SOURCE_INTEGRATION and d.integrations.count() == 0:
             d.delete()
         return
-    
+
     def add_device(self, d: Device):
         # if the device was already added by this integration, do nothing
         if self.devices.filter(pk=d.pk).exists():
@@ -51,13 +51,13 @@ class BaseIntegration(models.Model, metaclass=AbstractModelMeta):
         # if the device was already added by this integration, do nothing
         if self.devices.filter(pk=mac).exists():
             return
-        
+
         # if device already exists, add integration to device
         if Device.objects.filter(pk=mac).exists():
             d = Device.objects.get(pk=mac)
             self.add_device(d)
             return
-        
+
         # else, create device and add integration to device
         d = Device(mac=mac, hostname=hostname, description=description, import_source=Device.SOURCE_INTEGRATION)
         d.save()
@@ -66,3 +66,7 @@ class BaseIntegration(models.Model, metaclass=AbstractModelMeta):
     @abc.abstractmethod
     def process(self):
         pass
+
+    @property
+    def model_name(self):
+        return self.__class__.__name__

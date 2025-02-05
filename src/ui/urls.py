@@ -24,6 +24,7 @@ urlpatterns = [
 
     path('integrations/', views.IntegrationList.as_view(), name='integrations'),
     path('integrations/mosyle/add/', views.MosyleCreateView.as_view(), name='mosyle_add'),
+    path('integrations/google/add/', views.GoogleCreateView.as_view(), name='google_add'),
 
     # settings
     #path('settings/', views.SettingsView.as_view(), name='settings'),

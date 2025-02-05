@@ -9,9 +9,9 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from bootstrap_modal_forms.generic import BSModalCreateView, BSModalUpdateView
 
-from .forms import DeviceForm, CsvImportForm, PostAuthLogROForm, MosyleForm
+from .forms import DeviceForm, CsvImportForm, PostAuthLogROForm, MosyleForm, GoogleForm
 from freeradius.models import Device, CsvImporter, PostAuthLog
-from integrations.models import MosyleIntegration
+from integrations.models import MosyleIntegration, GoogleIntegration
 
 
 @method_decorator(login_required, name='dispatch')
@@ -101,9 +101,17 @@ class PostAuthLogReadOnlyEditView(BSModalUpdateView):
 @method_decorator(login_required, name='dispatch')
 class IntegrationList(ListView):
     template_name = "integrations/list.html"
-    model = MosyleIntegration
     context_object_name = "integrations"
     paginate_by = 10
+
+    def get_queryset(self):
+        goog = GoogleIntegration.objects.all()
+        mos = MosyleIntegration.objects.all()
+
+        combined_objects = list(goog) + list(mos)
+        return combined_objects
+
+
 
 @method_decorator(login_required, name='dispatch')
 class MosyleCreateView(BSModalCreateView):
@@ -111,3 +119,28 @@ class MosyleCreateView(BSModalCreateView):
     form_class = MosyleForm
     success_message = 'Integration was created.'
     success_url = reverse_lazy('integrations')
+
+@method_decorator(login_required, name='dispatch')
+class GoogleCreateView(BSModalCreateView):
+    template_name = 'integrations/add_google.html'
+    form_class = GoogleForm
+    success_message = 'Integration was created.'
+    success_url = reverse_lazy('integrations')
+
+    def form_valid(self, form):
+
+        # check for 'service_account_field' in request.FILES
+        if 'service_account' not in self.request.FILES:
+            return super().form_invalid(form)
+
+        # Handle the uploaded file and convert it to text
+        service_account_file = self.request.FILES['service_account']
+
+        # Read the file content
+        file_content = service_account_file.read().decode('utf-8')
+        service_account_file.close()
+
+        # set form service_account field to the file content
+        form.instance.service_account = file_content
+
+        return super().form_valid(form)
