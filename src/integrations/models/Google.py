@@ -7,7 +7,7 @@ import json, datetime
 from operator import itemgetter
 
 
-class GoogleIntegraion(BaseIntegration):
+class GoogleIntegration(BaseIntegration):
     username = models.CharField(max_length=255)
     service_account = EncryptedTextField()
 
@@ -75,7 +75,7 @@ class GoogleIntegraion(BaseIntegration):
 
         devices = get_chromebook_mac_addresses()
         for device in devices:
-            if device['last_sync'] > datetime.datetime.now() - datetime.timedelta(days=30):
+            if datetime.datetime.strptime(device['last_sync'], "%Y-%m-%dT%H:%M:%S.%fZ") > datetime.datetime.now() - datetime.timedelta(days=30):
                 self.add_device_raw(
                     device['mac_address'],
                     device['serial_number'],

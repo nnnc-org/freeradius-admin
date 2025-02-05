@@ -1,3 +1,3 @@
 from .BaseIntegration import BaseIntegration
 from .Mosyle import MosyleIntegration
-from .Google import GoogleIntegraion
+from .Google import GoogleIntegration
