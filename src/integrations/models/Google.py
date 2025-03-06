@@ -76,10 +76,19 @@ class GoogleIntegration(BaseIntegration):
         devices = get_chromebook_mac_addresses()
         for device in devices:
             if datetime.datetime.strptime(device['last_sync'], "%Y-%m-%dT%H:%M:%S.%fZ") > datetime.datetime.now() - datetime.timedelta(days=30):
+                model = ""
+                if not device['model']:
+                    model = "Unknown Model"
+                else:
+                    model = device['model']
+
+                if device['asset_tag']:
+                    model = model + " " + device['asset_tag']
+
                 self.add_device_raw(
                     device['mac_address'],
                     device['serial_number'],
-                    " ".join([device['model'], device['asset_tag']])
+                    model
                 )
 
         for d in self.devices.all():

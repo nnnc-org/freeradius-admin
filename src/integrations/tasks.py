@@ -3,7 +3,7 @@ from huey import crontab
 from huey.contrib.djhuey import periodic_task, task
 from huey.contrib.djhuey import db_periodic_task, db_task
 
-from .models import MosyleIntegration
+from .models import MosyleIntegration, GoogleIntegration
 
 @db_task()
 def run_integration(integration_pk):
@@ -14,7 +14,7 @@ def run_integration(integration_pk):
     else:
         print("MosyleIntegration with pk '" + str(integration_pk) + "' does not exist")
 
-@db_periodic_task(crontab(hour='*', minute='5'))
+@db_periodic_task(crontab(hour='*', minute='52'))
 def run_integrations():
     for i in MosyleIntegration.objects.filter(enabled=True):
         print("Running MosyleIntegration with pk '" + str(i.pk) + "'")
