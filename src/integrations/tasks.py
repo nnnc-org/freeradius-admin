@@ -13,3 +13,13 @@ def run_integration(integration_pk):
         i.process()
     else:
         print("MosyleIntegration with pk '" + str(integration_pk) + "' does not exist")
+
+@db_periodic_task(crontab(hour='*', minute='5'))
+def run_integrations():
+    for i in MosyleIntegration.objects.filter(enabled=True):
+        print("Running MosyleIntegration with pk '" + str(i.pk) + "'")
+        i.process()
+
+    for i in GoogleIntegration.objects.filter(enabled=True):
+        print("Running GoogleIntegration with pk '" + str(i.pk) + "'")
+        i.process()
