@@ -1,5 +1,5 @@
-django==3.2.10
-psycopg2-binary==2.8.6
+django==3.2.25
+psycopg2-binary==2.9.5
 django-netfields==1.2.4
 djangorestframework==3.12.4
 requests==2.26.0

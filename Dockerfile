@@ -1,7 +1,7 @@
-FROM python:3.10-alpine as base
+FROM python:3.11-alpine AS base
 
 # Build psycopg2 from source & install npm modules
-FROM base as builder
+FROM base AS builder
 
 RUN mkdir /install && apk --update add \
         libffi-dev \
@@ -10,7 +10,7 @@ RUN mkdir /install && apk --update add \
         python3-dev \
         musl-dev
 WORKDIR /install
-RUN echo -e "psycopg2-binary==2.8.6\nmozilla-django-oidc==2.0.0" > /requirements.txt && \
+RUN echo -e "psycopg2-binary==2.9.5\nmozilla-django-oidc==2.0.0" > /requirements.txt && \
     pip install --upgrade pip && \
     pip install --user -r /requirements.txt
 
